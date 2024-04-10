@@ -29,6 +29,16 @@ class Maze:
         self.raw_data = pandas.read_csv(filepath).values
         self.nodes = []
         self.node_dict = dict()  # key: index, value: the correspond node
+        # 4/10
+        for row in self.raw_data:
+            index = row[0]
+            node = Node(index)
+            self.nodes.append(node)
+            self.node_dict[index] = node
+        for row in self.raw_data:
+            for i in range(4):
+                if (row[i+1]!=0):
+                    node.successors.append(self.node_dict(row[i+1]),i+1,row[i+5])
 
     def get_start_point(self):
         if len(self.node_dict) < 2:
@@ -42,8 +52,37 @@ class Maze:
     def BFS(self, node: Node):
         # TODO : design your data structure here for your algorithm
         # Tips : return a sequence of nodes from the node to the nearest unexplored deadend
-        return None
-
+        def deadend(node: Node,marked: set):
+            for succ in node.successors:
+                if succ[0] not in marked:
+                    return False
+            return True
+        
+        def reconstruct_path(start_node, end_node, path):
+            current_node = end_node
+            shortest_path = [current_node]
+            while current_node != start_node:
+                current_node = path[current_node]
+                shortest_path.insert(0, current_node)
+            return shortest_path
+        
+        marked = set()
+        queue = []
+        path = {}  
+        queue.append(node)
+        path[node] = None  
+        while queue:
+            current_node = queue.pop(0)
+            marked.add(current_node)
+            if deadend(current_node):
+                return reconstruct_path(node, current_node, path)
+            for succ in current_node.successors:
+                if succ[0] not in marked:
+                    queue.append(succ[0])
+                    marked.add(succ[0])
+                    path[succ[0]] = current_node  
+        return []
+    
     def BFS_2(self, node_from: Node, node_to: Node):
         # TODO : similar to BFS but with fixed start point and end point
         # Tips : return a sequence of nodes of the shortest path
@@ -53,6 +92,7 @@ class Maze:
         # TODO : get the car action
         # Tips : return an action and the next direction of the car if the node_to is the Successor of node_to
         # If not, print error message and return 0
+
         return None
 
     def getActions(self, nodes: List[Node]):
