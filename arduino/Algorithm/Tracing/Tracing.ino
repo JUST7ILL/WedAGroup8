@@ -16,22 +16,12 @@ double w0=-2.0,
   w3=1.0,
   w4=2.0;
 
-void ReadIRs(int &sv0, int &sv1, int &sv2, int &sv3, int &sv4){
-  if(sv0 != -1){
-    sv0 = digitalRead(IR_DPin_0);
-  }
-  if(sv1 != -1){
-    sv1 = digitalRead(IR_DPin_1);
-  }
-  if(sv2 != -1){
-    sv2 = digitalRead(IR_DPin_2);
-  }
-  if(sv3 != -1){
-    sv3 = digitalRead(IR_DPin_3);
-  }
-  if(sv4 != -1){
-    sv4 = digitalRead(IR_DPin_4);
-  }
+void ReadIRs(int& sv0, int& sv1, int& sv2, int& sv3, int& sv4){
+  sv0 = digitalRead(IR_DPin_0);
+  sv1 = digitalRead(IR_DPin_1);
+  sv2 = digitalRead(IR_DPin_2);
+  sv3 = digitalRead(IR_DPin_3);
+  sv4 = digitalRead(IR_DPin_4);
 }
 void MotorWriting(double vL,double vR){
   if(vR>=0){
@@ -87,24 +77,26 @@ void turn_left(){
   int sv2 = digitalRead(IR_DPin_2);
   MotorWriting(-100,100); // 助教說不要轉太快
   while(sv2){ // 轉出黑線
-    ReadIRs(-1, -1, sv2, -1, -1);
+    sv2 = digitalRead(IR_DPin_2);
   }
   delay(200); // 確保轉出黑線
   int sv3 = digitalRead(IR_DPin_3); // 避免中央沒偵測到
   while(sv2 == 0 && sv3 == 0){ // 偵測到左側黑線停止
-    ReadIRs(-1, -1, sv2, sv3, -1);
+    sv2 = digitalRead(IR_DPin_2);
+    sv3 = digitalRead(IR_DPin_3);
   }
 }
 void turn_right(){
   int sv2 = digitalRead(IR_DPin_2);
   MotorWriting(100,-100); // 助教說不要轉太快
   while(sv2){ // 轉出黑線
-    ReadIRs(-1, -1, sv2, -1, -1);
+    sv2 = digitalRead(IR_DPin_2);
   }
   delay(200); // 確保轉出黑線
   int sv1 = digitalRead(IR_DPin_1); // 避免中央沒偵測到
   while(sv2 == 0 && sv1 == 0){ // 偵測到右側黑線停止
-    ReadIRs(-1, sv1, sv2, -1, -1);
+    sv1 = digitalRead(IR_DPin_1);
+    sv2 = digitalRead(IR_DPin_2);
   }
 }
 
