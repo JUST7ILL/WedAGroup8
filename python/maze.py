@@ -37,7 +37,7 @@ class Maze:
         for row in self.raw_data:
             for i in range(4):
                 if (row[i+1]!=0):
-                    node.successors.append(self.node_dict(row[i+1]),i+1,row[i+5])
+                    node[row[0]].successors.append(self.node_dict(row[i+1]),i+1,row[i+5])
 
     def get_start_point(self):
         if len(self.node_dict) < 2:
