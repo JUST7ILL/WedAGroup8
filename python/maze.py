@@ -29,7 +29,6 @@ class Maze:
         self.raw_data = pandas.read_csv(filepath).values
         self.nodes = []
         self.node_dict = dict()  # key: index, value: the correspond node
-        # 4/10
         for row in self.raw_data:
             index = row[0]
             node = Node(index)
@@ -48,7 +47,7 @@ class Maze:
 
     def get_node_dict(self):
         return self.node_dict
-
+    
     def BFS(self, node: Node):
         # TODO : design your data structure here for your algorithm
         # Tips : return a sequence of nodes from the node to the nearest unexplored deadend
@@ -86,19 +85,92 @@ class Maze:
     def BFS_2(self, node_from: Node, node_to: Node):
         # TODO : similar to BFS but with fixed start point and end point
         # Tips : return a sequence of nodes of the shortest path
+        def reconstruct_path(start_node, end_node, path):
+            current_node = end_node
+            shortest_path = [current_node]
+            while current_node != start_node:
+                current_node = path[current_node]
+                shortest_path.insert(0, current_node)
+            return shortest_path
+        
+        marked = set()
+        queue = []
+        path = {}  
+        queue.append(node_from)
+        path[node_from] = None  
+        while queue:
+            current_node = queue.pop(0)
+            marked.add(current_node)
+            if (current_node == node_to):
+                return reconstruct_path(node_from, current_node, path)
+            for succ in current_node.successors:
+                if succ[0] not in marked:
+                    queue.append(succ[0])
+                    marked.add(succ[0])
+                    path[succ[0]] = current_node  
         return None
 
     def getAction(self, car_dir, node_from: Node, node_to: Node):
         # TODO : get the car action
         # Tips : return an action and the next direction of the car if the node_to is the Successor of node_to
         # If not, print error message and return 0
+        if is_successor(node_from, node_to):
+            next_direction = get_direction(node_from, node_to)
 
-        return None
+            if car_dir == Direction.NORTH:
+                if next_direction == Direction.NORTH:
+                    return Action.ADVANCE, next_direction
+                if next_direction == Direction.SOUTH:
+                    return Action.U_TURN, next_direction
+                if next_direction == Direction.EAST:
+                    return Action.TURN_RIGHT, next_direction
+                if next_direction == Direction.WEST:
+                    return Action.TURN_LEFT, next_direction
+                
+            elif car_dir == Direction.SOUTH:
+                if next_direction == Direction.NORTH:
+                    return Action.U_TURN, next_direction
+                if next_direction == Direction.SOUTH:
+                    return Action.ADVANCE, next_direction
+                if next_direction == Direction.EAST:
+                    return Action.TURN_LEFT, next_direction
+                if next_direction == Direction.WEST:
+                    return Action.TURN_RIGHT, next_direction
+                
+            elif car_dir == Direction.EAST:
+                if next_direction == Direction.NORTH:
+                    return Action.TURN_LEFT, next_direction
+                if next_direction == Direction.SOUTH:
+                    return Action.TURN_RIGHT, next_direction
+                if next_direction == Direction.EAST:
+                    return Action.ADVANCE, next_direction
+                if next_direction == Direction.WEST:
+                    return Action.U_TURN, next_direction
+                
+            else:
+                if next_direction == Direction.NORTH:
+                    return Action.TURN_RIGHT, next_direction
+                if next_direction == Direction.SOUTH:
+                    return Action.TURN_LEFT, next_direction
+                if next_direction == Direction.EAST:
+                    return Action.U_TURN, next_direction
+                if next_direction == Direction.WEST:
+                    return Action.ADVANCE, next_direction
+        else:
+            log.error("Error: the node_to is not the successor of node_from")
+            return None
 
     def getActions(self, nodes: List[Node]):
         # TODO : given a sequence of nodes, return the corresponding action sequence
         # Tips : iterate through the nodes and use getAction() in each iteration
-        return None
+        actions = []
+        car_dir = Direction.NORTH
+        for i in range(len(nodes) - 1):
+            node_from = nodes[i]
+            node_to = nodes[i + 1]
+            action, car_dir = getAction(car_dir, node_from, node_to)
+            actions.append(action)
+        return actions
 
     def actions_to_str(self, actions):
         # cmds should be a string sequence like "fbrl....", use it as the input of BFS checklist #1
