@@ -16,12 +16,12 @@ double w0=-2.0,
   w3=1.0,
   w4=2.0;
 
-void ReadIRs(int& sv0, int& sv1, int& sv2, int& sv3, int& sv4){
-  sv0 = digitalRead(IR_DPin_0);
-  sv1 = digitalRead(IR_DPin_1);
-  sv2 = digitalRead(IR_DPin_2);
-  sv3 = digitalRead(IR_DPin_3);
-  sv4 = digitalRead(IR_DPin_4);
+void ReadIRs(int* sv0, int* sv1, int* sv2, int* sv3, int* sv4){
+  if(sv0 != NULL) *sv0 = digitalRead(IR_DPin_0);
+  if(sv1 != NULL) *sv1 = digitalRead(IR_DPin_1);
+  if(sv2 != NULL) *sv2 = digitalRead(IR_DPin_2);
+  if(sv3 != NULL) *sv3 = digitalRead(IR_DPin_3);
+  if(sv4 != NULL) *sv4 = digitalRead(IR_DPin_4);
 }
 void MotorWriting(double vL,double vR){
   if(vR>=0){
@@ -60,15 +60,15 @@ void straight(){
   ReadIRs(sv0, sv1, sv2, sv3, sv4);
   while(sv1&&sv2&&sv3&&sv4&&sv0){ // 走出出發點
     Tracing(sv0,sv1,sv2,sv3,sv4);
-    ReadIRs(sv0, sv1, sv2, sv3, sv4);
+    ReadIRs(&sv0, &sv1, &sv2, &sv3, &sv4);
   }
   while((sv0&&sv1&&sv2&&sv3&&sv4) == 0){ // 在路上
     Tracing(sv0,sv1,sv2,sv3,sv4);
-    ReadIRs(sv0, sv1, sv2, sv3, sv4);
+    ReadIRs(&sv0, &sv1, &sv2, &sv3, &sv4);
   }
   while(sv1&&sv2&&sv3&&sv4&&sv0){ // 走進目標點
     Tracing(sv0,sv1,sv2,sv3,sv4);
-    ReadIRs(sv0, sv1, sv2, sv3, sv4);
+    ReadIRs(&sv0, &sv1, &sv2, &sv3, &sv4);
   }
   delay(200);
 }
@@ -82,8 +82,7 @@ void turn_left(){
   delay(200); // 確保轉出黑線
   int sv3 = digitalRead(IR_DPin_3); // 避免中央沒偵測到
   while(sv2 == 0 && sv3 == 0){ // 偵測到左側黑線停止
-    sv2 = digitalRead(IR_DPin_2);
-    sv3 = digitalRead(IR_DPin_3);
+    ReadIRs(NULL, NULL, &sv2, &sv3, NULL);
   }
 }
 void turn_right(){
@@ -95,8 +94,7 @@ void turn_right(){
   delay(200); // 確保轉出黑線
   int sv1 = digitalRead(IR_DPin_1); // 避免中央沒偵測到
   while(sv2 == 0 && sv1 == 0){ // 偵測到右側黑線停止
-    sv1 = digitalRead(IR_DPin_1);
-    sv2 = digitalRead(IR_DPin_2);
+    ReadIRs(NULL, &sv1, &sv2, NULL, NULL);
   }
 }
 
