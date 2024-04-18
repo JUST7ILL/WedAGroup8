@@ -3,12 +3,12 @@
 #define IR_DPin_2 36
 #define IR_DPin_3 38
 #define IR_DPin_4 40
-int PWMA = 11;
+int PWMA = 11; // right
 int AIN2 = 3;
 int AIN1 = 2;
 int BIN1 = 5;
 int BIN2 = 6;
-int PWMB = 12;
+int PWMB = 12; // left
 
 double w0=-2.0,
   w1=-1.0,
