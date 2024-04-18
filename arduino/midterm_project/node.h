@@ -7,6 +7,8 @@
 /***************************************************************************/
 
 #include "track.h"
+#include "bluetooth.h"
+#include "RFID.h"
 /*===========================import variable===========================*/
 int extern _Tp;
 int extern turn_speed;
@@ -29,17 +31,35 @@ void ReadIRs(){
   r2 = digitalRead(IRpin_RR);
 }
 
+byte* _id;
+byte _idSize;
+
 void straight(){
   ReadIRs();
   while(l2&&l1&&m0&&r1&&r2){ // 走出出發點
+    _id = rfid(_idSize);
+    if(_id != 0){
+      send_byte(_id, _idSize);
+      return;
+    }
     tracking(l2, l1, m0, r1, r2);
     ReadIRs();
   }
   while((l2&&l1&&m0&&r1&&r2) == 0){ // 在路上
+    _id = rfid(_idSize);
+    if(_id != 0){
+      send_byte(_id, _idSize);
+      return;
+    }
     tracking(l2, l1, m0, r1, r2);
     ReadIRs();
   }
   while(l2&&l1&&m0&&r1&&r2){ // 走進目標點
+    _id = rfid(_idSize);
+    if(_id != 0){
+      send_byte(_id, _idSize);
+      return;
+    }
     tracking(l2, l1, m0, r1, r2);
     ReadIRs();
   }

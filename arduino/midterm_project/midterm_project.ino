@@ -68,8 +68,8 @@ void setup() {
 /*============setup============*/
 
 /*=====Import header files=====*/
-#include "RFID.h"
-#include "bluetooth.h"
+// #include "RFID.h" // moved to node.h
+// #include "bluetooth.h" // moved to node.h
 #include "node.h"
 // #include "track.h" // moved to node.h
 /*=====Import header files=====*/
