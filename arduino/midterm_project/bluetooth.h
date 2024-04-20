@@ -58,7 +58,6 @@ void send_byte(byte* id, byte& idSize) {
     for (byte i = 0; i < idSize; i++) {  // Send UID consequently.
         Serial1.write(id[i]);
     }
-    Serial1.write("\n");
 #ifdef DEBUG
     Serial.print("Sent id: ");
     for (byte i = 0; i < idSize; i++) {  // Show UID consequently.
