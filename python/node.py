@@ -27,7 +27,7 @@ class Node:
 
     def set_successor(self, successor, direction, length=1):
         self.successors.append((successor, Direction(direction), int(length)))
-        print(f"For Node {self.index}, a successor {self.successors[-1]} is set.")
+        #print(f"For Node {self.index}, a successor {self.successors[-1]} is set.")
         return
 
     def get_direction(self, node):

@@ -36,9 +36,10 @@ class Maze:
             self.node_dict[index] = node
         for row in self.raw_data:
             for i in range(4):
-                if (row[i+1]!=0):
-                    node[row[0]].successors.append(self.node_dict(row[i+1]),i+1,row[i+5])
-
+                if (row[i+1]>0):
+                    (self.node_dict[row[0].astype(int)]).set_successor(self.node_dict[row[i+1].astype(int)],i+1,row[i+5])
+       
+                
     def get_start_point(self):
         if len(self.node_dict) < 2:
             log.error("Error: the start point is not included.")
@@ -73,7 +74,7 @@ class Maze:
         while queue:
             current_node = queue.pop(0)
             marked.add(current_node)
-            if deadend(current_node):
+            if deadend(current_node, marked):
                 return reconstruct_path(node, current_node, path)
             for succ in current_node.successors:
                 if succ[0] not in marked:
@@ -114,8 +115,8 @@ class Maze:
         # TODO : get the car action
         # Tips : return an action and the next direction of the car if the node_to is the Successor of node_to
         # If not, print error message and return 0
-        if is_successor(node_from, node_to):
-            next_direction = get_direction(node_from, node_to)
+        if node_from.is_successor(node_to):
+            next_direction = node_from.get_direction(node_to)
 
             if car_dir == Direction.NORTH:
                 if next_direction == Direction.NORTH:
@@ -164,11 +165,11 @@ class Maze:
         # TODO : given a sequence of nodes, return the corresponding action sequence
         # Tips : iterate through the nodes and use getAction() in each iteration
         actions = []
-        car_dir = Direction.NORTH
+        car_dir = Direction.SOUTH
         for i in range(len(nodes) - 1):
             node_from = nodes[i]
             node_to = nodes[i + 1]
-            action, car_dir = getAction(car_dir, node_from, node_to)
+            action, car_dir = self.getAction(car_dir, node_from, node_to)
             actions.append(action)
         return actions
 
@@ -186,3 +187,11 @@ class Maze:
 
     def strategy_2(self, node_from: Node, node_to: Node):
         return self.BFS_2(node_from, node_to)
+
+#maze = Maze.__init__("C:\\Users\\Ricky\\Downloads\\maze.csv")
+#maze = Maze.__init__("C:\Users\Ricky\Downloads\maze.csv")
+maze = Maze("C:\\Users\\Ricky\\Downloads\\maze (2).csv")
+print(maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[45]))))
+    
+#raw_data = pandas.read_csv("C:\\Users\\Ricky\\Downloads\\maze.csv").values
+
