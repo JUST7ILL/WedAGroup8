@@ -119,6 +119,7 @@ void Search() {
         turn_right();
         break;
     }
+    state = false;
 }
 
 /*===========================define function===========================*/

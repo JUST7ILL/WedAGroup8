@@ -26,7 +26,7 @@ BT_CMD ask_BT() {
 // 2. link bluetooth message to your own command type
       cmd = Serial1.read();
       switch(cmd){
-        case 's':
+        case 'f':
           message = STRAIGHT;
           break;
         case 'l':
