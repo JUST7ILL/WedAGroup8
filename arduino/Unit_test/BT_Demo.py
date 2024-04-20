@@ -37,13 +37,13 @@ class bluetooth:
         send = output.encode("utf-8")
         self.ser.write(send)
 
-    # def readString(self) -> str:
-    #     # Scan the input buffer until meet a '\n'. return none if doesn't exist.
-    #     if self.waiting():
-    #         receiveMsg = self.ser.readline().decode("utf-8")[:-1]
-    #     return receiveMsg
+    def readString(self) -> str:
+        # Scan the input buffer until meet a '\n'. return none if doesn't exist.
+        if self.waiting():
+            receiveMsg = self.ser.readline().decode("utf-8")[:-1]
+        return receiveMsg
     
-    def readString(self):
+    def readRFID(self):
         time.sleep(0.05)
         waiting = self.ser.in_waiting
         rv = self.ser.read(waiting)
@@ -57,7 +57,7 @@ class bluetooth:
 def read():
     while True:
         if bt.waiting():
-            print(bt.readString())
+            print(bt.readRFID())
 
 
 def write():
