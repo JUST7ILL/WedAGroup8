@@ -39,6 +39,13 @@
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // 建立MFRC522物件
 /*===========================define pin & create module object===========================*/
 
+/*=====Import header files=====*/
+// #include "RFID.h" // moved to node.h
+// #include "bluetooth.h" // moved to node.h
+#include "node.h"
+// #include "track.h" // moved to node.h
+/*=====Import header files=====*/
+
 /*============setup============*/
 void setup() {
     // bluetooth initialization
@@ -66,13 +73,6 @@ void setup() {
 #endif
 }
 /*============setup============*/
-
-/*=====Import header files=====*/
-// #include "RFID.h" // moved to node.h
-// #include "bluetooth.h" // moved to node.h
-#include "node.h"
-// #include "track.h" // moved to node.h
-/*=====Import header files=====*/
 
 /*===========================initialize variables===========================*/
 int l2 = 0, l1 = 0, m0 = 0, r1 = 0, r2 = 0;  // 紅外線模組的讀值(0->white,1->black)
@@ -114,9 +114,11 @@ void Search() {
         break;
       case LEFT:
         turn_left();
+        straight();
         break;
       case RIGHT:
         turn_right();
+        straight();
         break;
     }
     state = false;

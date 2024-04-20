@@ -69,7 +69,7 @@ void straight(){
 void turn_left(){
   ReadIRs();
   MotorWriting(-turn_speed, turn_speed);
-  while(m0){ // 轉出黑線
+  while(l2||l1||m0){ // 轉出黑線
     ReadIRs();
   }
   delay(20000/turn_speed); // 確保轉出黑線
@@ -82,7 +82,7 @@ void turn_left(){
 void turn_right(){
   ReadIRs();
   MotorWriting(turn_speed, -turn_speed);
-  while(m0){ // 轉出黑線
+  while(r2||r1||m0){ // 轉出黑線
     ReadIRs();
   }
   delay(20000/turn_speed); // 確保轉出黑線
