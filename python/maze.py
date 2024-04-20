@@ -190,8 +190,8 @@ class Maze:
 
 #maze = Maze.__init__("C:\\Users\\Ricky\\Downloads\\maze.csv")
 #maze = Maze.__init__("C:\Users\Ricky\Downloads\maze.csv")
-maze = Maze("C:\\Users\\Ricky\\Downloads\\maze (2).csv")
-print(maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[45]))))
+# maze = Maze("C:\\Users\\Ricky\\Downloads\\maze (2).csv")
+# print(maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[45]))))
     
 #raw_data = pandas.read_csv("C:\\Users\\Ricky\\Downloads\\maze.csv").values
 

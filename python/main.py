@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 TEAM_NAME = "YOUR_TEAM_NAME"
 SERVER_URL = "http://140.112.175.18:5000/"
 MAZE_FILE = "data/small_maze.csv"
-BT_PORT = ""
+BT_PORT = "COM4"
 
 
 def parse_args():
@@ -50,7 +50,9 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
     elif mode == "1":
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
-
+        
+        time.sleep(5)
+        interface.send_action("f")
     else:
         log.error("Invalid mode")
         sys.exit(1)
