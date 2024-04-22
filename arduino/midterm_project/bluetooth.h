@@ -50,7 +50,6 @@ BT_CMD ask_BT() {
 void send_msg(const char& msg) {
     // TODO:
     Serial1.write(msg);
-    Serial1.write("\n");
 }  // send_msg
 
 // send UID back through Serial1(bluetooth serial)
