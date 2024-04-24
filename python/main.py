@@ -50,7 +50,7 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
     elif mode == "1":
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
-        t_str = "frrfll"
+        t_str = maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[12])))
         for c in t_str:
             interface.send_action(c)
             while True:

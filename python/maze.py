@@ -187,10 +187,42 @@ class Maze:
 
     def strategy_2(self, node_from: Node, node_to: Node):
         return self.BFS_2(node_from, node_to)
+    
+    def distance_find(self, node_start: Node):
+        self.distance = {}
+        for i in range(len(self.nodes)):
+            path = self.BFS_2(node_start, self.node_dict[i + 1])
+            hori,verti = 0,0
+            for j in range(len(path)-1):
+                dirc = path[j].get_direction(path[j+1])
+                if dirc == Direction.NORTH:
+                    verti+=1
+                if dirc == Direction.SOUTH:
+                    verti-=1
+                if dirc == Direction.WEST:
+                    hori+=1
+                if dirc == Direction.EAST:
+                    verti+=1
+            if hori<0: hori=-hori
+            if verti<0: verti=-verti
+            distance = hori+verti
+            self.distance[i + 1] = distance
+        return self.distance
+    #def treasurehunt(self, node_start: Node):
+
+maze = Maze("C:\\Users\\Ricky\\Downloads\\medium_maze.csv")
+for i in range(len(maze.nodes)):
+    print("the distance from node 1 to node ", i+1 ,maze.distance_find(maze.node_dict[1])[i+1])
+
+
+
+
+            
+
 
 #maze = Maze.__init__("C:\\Users\\Ricky\\Downloads\\maze.csv")
 #maze = Maze.__init__("C:\Users\Ricky\Downloads\maze.csv")
-# maze = Maze("C:\\Users\\Ricky\\Downloads\\maze (2).csv")
+#maze = Maze("C:\\Users\\Ricky\\Downloads\\maze (2).csv")
 # print(maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[45]))))
     
 #raw_data = pandas.read_csv("C:\\Users\\Ricky\\Downloads\\maze.csv").values
