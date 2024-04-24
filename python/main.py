@@ -50,9 +50,17 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
     elif mode == "1":
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
-        
-        time.sleep(5)
-        interface.send_action("f")
+        t_str = "frrfll"
+        for c in t_str:
+            interface.send_action(c)
+            while True:
+                rt = interface.get_str()
+                if not rt: continue
+                if rt == 'r':
+                    uid = interface.get_UID()
+                    print(uid)
+                break
+            
     else:
         log.error("Invalid mode")
         sys.exit(1)
