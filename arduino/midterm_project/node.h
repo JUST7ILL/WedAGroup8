@@ -39,7 +39,6 @@ void straight(){
   while(l2&&l1&&m0&&r1&&r2){ // 走出出發點
     _id = rfid(_idSize);
     if(_id != 0){
-      send_msg('r');
       send_byte(_id, _idSize);
       return;
     }
@@ -49,7 +48,6 @@ void straight(){
   while((l2&&l1&&m0&&r1&&r2) == 0){ // 在路上
     _id = rfid(_idSize);
     if(_id != 0){
-      send_msg('r');
       send_byte(_id, _idSize);
       return;
     }
@@ -59,7 +57,6 @@ void straight(){
   while(l2&&l1&&m0&&r1&&r2){ // 走進目標點
     _id = rfid(_idSize);
     if(_id != 0){
-      send_msg('r');
       send_byte(_id, _idSize);
       return;
     }
@@ -73,6 +70,7 @@ void straight(){
 void turn_left(){
   ReadIRs();
   MotorWriting(-turn_speed, turn_speed);
+  delay(5000/turn_speed);
   while(l2||l1||m0){ // 轉出黑線
     ReadIRs();
   }
@@ -81,12 +79,12 @@ void turn_left(){
   while(m0 == 0 && r1 == 0){ // 偵測到左側黑線停止
     ReadIRs();
   }
-  send_msg('n');
 }
 
 void turn_right(){
   ReadIRs();
   MotorWriting(turn_speed, -turn_speed);
+  delay(5000/turn_speed);
   while(r2||r1||m0){ // 轉出黑線
     ReadIRs();
   }
@@ -95,5 +93,4 @@ void turn_right(){
   while(m0 == 0 && l1 == 0){ // 偵測到左側黑線停止
     ReadIRs();
   }
-  send_msg('n');
 }

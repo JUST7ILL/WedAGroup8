@@ -25,20 +25,20 @@ class BTInterface:
         input("Press enter to start.")
         self.bt.serial_write_string("s")
 
-    def get_UID(self):
+    def get_byte(self):
         return self.bt.serial_read_byte()
 
-    def get_str(self):
-        return self.bt.serial_read_string()
+    # def get_str(self):
+    #     return self.bt.serial_read_string()
     
     def send_action(self, dirc):
-        # TODO : send the action to car
         self.bt.serial_write_string(dirc)
         return
-
+            
     def end_process(self):
         self.bt.serial_write_string("e")
         self.bt.disconnect()
+        
 
 
 if __name__ == "__main__":

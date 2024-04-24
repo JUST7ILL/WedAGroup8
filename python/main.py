@@ -35,14 +35,13 @@ def parse_args():
     parser.add_argument("--server-url", default=SERVER_URL, help="Server URL", type=str)
     return parser.parse_args()
 
-
+    
 def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: str):
     maze = Maze(maze_file)
     point = Scoreboard(team_name, server_url)
     # point = ScoreboardFake("your team name", "data/fakeUID.csv") # for local testing
     interface = BTInterface(port=bt_port)
     # TODO : Initialize necessary variables
-
     if mode == "0":
         log.info("Mode 0: For treasure-hunting")
         # TODO : for treasure-hunting, which encourages you to hunt as many scores as possible
@@ -51,15 +50,16 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
         t_str = maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[12])))
+        # t_str = "frrfl"
         for c in t_str:
             interface.send_action(c)
             while True:
-                rt = interface.get_str()
-                if not rt: continue
-                if rt == 'r':
-                    uid = interface.get_UID()
-                    print(uid)
-                break
+                if interface.bt.waiting():
+                    rt = interface.get_byte()
+                    if rt == "0x6e": break
+                    nowuid = rt[2:]
+                    print(nowuid)
+                    break
             
     else:
         log.error("Invalid mode")

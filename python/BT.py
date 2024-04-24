@@ -17,7 +17,11 @@ class Bluetooth:
 
     def __init__(self):
         self.serial = Serial()
-
+        self.rt = ""
+        
+    def waiting(self) -> bool:
+        return self.serial.in_waiting
+    
     def do_connect(self, port: str):
         self.serial.close()
         log.info(f"Connecting to {port}...")
@@ -39,12 +43,12 @@ class Bluetooth:
     def serial_write_bytes(self, data: bytes):
         self.serial.write(data)
 
-    def serial_read_string(self):
-        waiting = self.serial.in_waiting
-        if waiting >= 0:
-            rv = self.serial.readline().decode("utf-8")[:-1]
-            return rv
-        return ""
+    # def serial_read_char(self):
+    #     waiting = self.serial.in_waiting
+    #     if waiting >= 0:
+    #         rv = self.rt = self.serial.read(waiting)
+    #         return rv
+    #     return ""
 
     def serial_read_byte(self):
         sleep(0.05)
