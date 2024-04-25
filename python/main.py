@@ -6,10 +6,9 @@ import time
 
 import numpy as np
 import pandas
-
 from BTinterface import BTInterface
 from maze import Action, Maze
-from score import Scoreboard, ScoreboardFake
+from score import ScoreboardServer, ScoreboardFake
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
