@@ -49,8 +49,9 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
     elif mode == "1":
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
-        t_str = maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[12])))
-        # t_str = "frrfl"
+        # t_str = maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[12])))
+        lastuid = 0
+        t_str = "ff"
         for c in t_str:
             interface.send_action(c)
             while True:
@@ -58,9 +59,13 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
                     rt = interface.get_byte()
                     if rt == "0x6e": break
                     nowuid = rt[2:]
-                    print(nowuid)
+                    if lastuid == nowuid: continue
+                    # print(nowuid)
+                    point.add_UID(nowuid)
+                    lastuid = nowuid
                     break
-            
+        while True:
+            a = 1
     else:
         log.error("Invalid mode")
         sys.exit(1)

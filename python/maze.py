@@ -210,9 +210,9 @@ class Maze:
         return self.distance
     #def treasurehunt(self, node_start: Node):
 
-maze = Maze("C:\\Users\\Ricky\\Downloads\\medium_maze.csv")
-for i in range(len(maze.nodes)):
-    print("the distance from node 1 to node ", i+1 ,maze.distance_find(maze.node_dict[1])[i+1])
+# maze = Maze("C:\\Users\\Ricky\\Downloads\\medium_maze.csv")
+# for i in range(len(maze.nodes)):
+#     print("the distance from node 1 to node ", i+1 ,maze.distance_find(maze.node_dict[1])[i+1])
 
 
 
