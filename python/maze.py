@@ -21,6 +21,7 @@ class Action(IntEnum):
 
 
 class Maze:
+    visited = []
     def __init__(self, filepath: str):
         # TODO : read file and implement a data structure you like
         # For example, when parsing raw_data, you may create several Node objects.
@@ -49,6 +50,13 @@ class Maze:
     def get_node_dict(self):
         return self.node_dict
     
+    def endcount(self):
+        count = 0
+        for i in range(1, len(self.node_dict) + 1):
+            if len(self.node_dict[i].successors) == 1:
+                count += 1
+        return count
+    
     def BFS(self, node: Node):
         # TODO : design your data structure here for your algorithm
         # Tips : return a sequence of nodes from the node to the nearest unexplored deadend
@@ -75,7 +83,9 @@ class Maze:
             current_node = queue.pop(0)
             marked.add(current_node)
             if deadend(current_node, marked):
-                return reconstruct_path(node, current_node, path)
+                if current_node in self.visited: continue
+                self.visited.append(current_node)
+                return reconstruct_path(node, current_node, path), current_node
             for succ in current_node.successors:
                 if succ[0] not in marked:
                     queue.append(succ[0])
@@ -161,17 +171,17 @@ class Maze:
             log.error("Error: the node_to is not the successor of node_from")
             return None
 
-    def getActions(self, nodes: List[Node]):
+    def getActions(self, nodes: List[Node], dir):
         # TODO : given a sequence of nodes, return the corresponding action sequence
         # Tips : iterate through the nodes and use getAction() in each iteration
         actions = []
-        car_dir = Direction.SOUTH
+        car_dir = dir
         for i in range(len(nodes) - 1):
             node_from = nodes[i]
             node_to = nodes[i + 1]
             action, car_dir = self.getAction(car_dir, node_from, node_to)
             actions.append(action)
-        return actions
+        return actions, car_dir
 
     def actions_to_str(self, actions):
         # cmds should be a string sequence like "fbrl....", use it as the input of BFS checklist #1
@@ -226,4 +236,14 @@ class Maze:
 # print(maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[45]))))
     
 #raw_data = pandas.read_csv("C:\\Users\\Ricky\\Downloads\\maze.csv").values
-
+maze = Maze("C:\\Users\\yehyo\\Downloads\\medium_maze.csv")
+now_node = maze.node_dict[1]
+dir = Direction.NORTH
+maze.visited.append(now_node)
+t_str = ""
+for i in range(maze.endcount() - 1):
+    action, now_node = maze.strategy(now_node)
+    acts, dir = maze.getActions(action, dir)
+    t_str += maze.actions_to_str(acts)
+    
+print(t_str)

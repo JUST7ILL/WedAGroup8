@@ -33,6 +33,7 @@ BT_CMD ask_BT() {
           message = LEFT;
           break;
         case 'r':
+        case 'b':
           message = RIGHT;
           break;
       }
