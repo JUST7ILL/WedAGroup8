@@ -61,10 +61,14 @@ class Maze:
         # TODO : design your data structure here for your algorithm
         # Tips : return a sequence of nodes from the node to the nearest unexplored deadend
         def deadend(node: Node,marked: set):
-            for succ in node.successors:
-                if succ[0] not in marked:
-                    return False
-            return True
+            if len(node.successors) == 1: 
+                # print(self.node_to_index(node))
+                return True
+            return False
+            # for succ in node.successors:
+            #     if succ[0] not in marked:
+            #         return False
+            # return True
         
         def reconstruct_path(start_node, end_node, path):
             current_node = end_node
@@ -83,9 +87,9 @@ class Maze:
             current_node = queue.pop(0)
             marked.add(current_node)
             if deadend(current_node, marked):
-                if current_node in self.visited: continue
-                self.visited.append(current_node)
-                return reconstruct_path(node, current_node, path), current_node
+                if current_node not in self.visited:
+                    self.visited.append(current_node)
+                    return reconstruct_path(node, current_node, path), current_node
             for succ in current_node.successors:
                 if succ[0] not in marked:
                     queue.append(succ[0])
@@ -233,11 +237,12 @@ class Maze:
             if self.node_dict[i] == node:
                 return i
             
-    def tresure_hunt(self):
+    def tresure_hunt(self): # 先找最遠的 再都找最近的
         nodeStart_index = self.first_node(self.node_dict[6],self.distance_find(self.node_dict[6]))
-        dir = Direction.NORTH
+        dir = Direction.WEST
         t_str = ""
         node_str = "6"
+        self.visited.append(self.node_dict[6])
         firstAction , dir = self.getActions(self.strategy_2(self.node_dict[6],self.node_dict[nodeStart_index]),dir)
         t_str += self.actions_to_str(firstAction)
         t_str += "  "
@@ -245,16 +250,31 @@ class Maze:
 
         now_node = self.node_dict[nodeStart_index]        
         self.visited.append(now_node)
+        for i in range(self.endcount() - 2):
+            action, now_node = self.strategy(now_node)
+            acts, dir = self.getActions(action, dir)
+            t_str += self.actions_to_str(acts)
+            # t_str += " " 
+            node_str += "," + str(self.node_to_index(now_node)) 
+        return t_str , node_str
+    
+    def tresure_hunt2(self): # 都找最近的
+        dir = Direction.WEST
+        t_str = ""
+        node_str = "6"
+        now_node = self.node_dict[6]        
+        self.visited.append(now_node)
         for i in range(self.endcount() - 1):
             action, now_node = self.strategy(now_node)
             acts, dir = self.getActions(action, dir)
             t_str += self.actions_to_str(acts)
-            t_str += " " 
+            # t_str += " " 
             node_str += "," + str(self.node_to_index(now_node)) 
         return t_str , node_str
    
-maze = Maze("C:\\Users\\Ricky\\Downloads\\big_maze_112.csv")
+maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
 print(maze.tresure_hunt())
+# print(maze.tresure_hunt2())
 '''
 for i in range(len(maze.nodes)):
     print("the distance from node 1 to node ", i+1 ,maze.distance_find(maze.node_dict[47])[i+1])
