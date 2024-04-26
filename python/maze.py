@@ -212,30 +212,57 @@ class Maze:
                 if dirc == Direction.WEST:
                     hori+=1
                 if dirc == Direction.EAST:
-                    verti+=1
+                    hori-=1
             if hori<0: hori=-hori
             if verti<0: verti=-verti
             distance = hori+verti
             self.distance[i + 1] = distance
         return self.distance
-    #def treasurehunt(self, node_start: Node):
-
-# maze = Maze("C:\\Users\\Ricky\\Downloads\\medium_maze.csv")
-# for i in range(len(maze.nodes)):
-#     print("the distance from node 1 to node ", i+1 ,maze.distance_find(maze.node_dict[1])[i+1])
-
-
-
-
-            
-
-
-#maze = Maze.__init__("C:\\Users\\Ricky\\Downloads\\maze.csv")
-#maze = Maze.__init__("C:\Users\Ricky\Downloads\maze.csv")
-#maze = Maze("C:\\Users\\Ricky\\Downloads\\maze (2).csv")
-# print(maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[45]))))
     
-#raw_data = pandas.read_csv("C:\\Users\\Ricky\\Downloads\\maze.csv").values
+    def first_node(self, node_start: Node, distance: dict):
+        distance = self.distance_find(node_start)
+        maxvalue , maxindex = 0,0
+        for i in range(1,len(self.nodes)+1):
+            if distance[i]>maxvalue:
+                maxvalue = distance[i]
+                maxindex = i
+        return maxindex
+
+    def node_to_index(self, node: Node):
+        for i in range(1,len(self.nodes)+1):
+            if self.node_dict[i] == node:
+                return i
+            
+    def tresure_hunt(self):
+        nodeStart_index = self.first_node(self.node_dict[6],self.distance_find(self.node_dict[6]))
+        dir = Direction.NORTH
+        t_str = ""
+        node_str = "6"
+        firstAction , dir = self.getActions(self.strategy_2(self.node_dict[6],self.node_dict[nodeStart_index]),dir)
+        t_str += self.actions_to_str(firstAction)
+        t_str += "  "
+        node_str += "," + str(nodeStart_index)
+
+        now_node = self.node_dict[nodeStart_index]        
+        self.visited.append(now_node)
+        for i in range(self.endcount() - 1):
+            action, now_node = self.strategy(now_node)
+            acts, dir = self.getActions(action, dir)
+            t_str += self.actions_to_str(acts)
+            t_str += " " 
+            node_str += "," + str(self.node_to_index(now_node)) 
+        return t_str , node_str
+   
+maze = Maze("C:\\Users\\Ricky\\Downloads\\big_maze_112.csv")
+print(maze.tresure_hunt())
+'''
+for i in range(len(maze.nodes)):
+    print("the distance from node 1 to node ", i+1 ,maze.distance_find(maze.node_dict[47])[i+1])
+for i in range(1,len(maze.nodes)):
+    print("start at node", i ,"the first node is node ", maze.first_node(maze.node_dict[i],maze.distance_find(maze.node_dict[i])))
+'''
+
+'''
 maze = Maze("C:\\Users\\yehyo\\Downloads\\medium_maze.csv")
 now_node = maze.node_dict[1]
 dir = Direction.NORTH
@@ -247,3 +274,4 @@ for i in range(maze.endcount() - 1):
     t_str += maze.actions_to_str(acts)
     
 print(t_str)
+'''
