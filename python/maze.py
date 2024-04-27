@@ -245,7 +245,7 @@ class Maze:
         self.visited.append(self.node_dict[6])
         firstAction , dir = self.getActions(self.strategy_2(self.node_dict[6],self.node_dict[nodeStart_index]),dir)
         t_str += self.actions_to_str(firstAction)
-        t_str += "  "
+        # t_str += "  "
         node_str += "," + str(nodeStart_index)
 
         now_node = self.node_dict[nodeStart_index]        
@@ -272,8 +272,8 @@ class Maze:
             node_str += "," + str(self.node_to_index(now_node)) 
         return t_str , node_str
    
-maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
-print(maze.tresure_hunt())
+# maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
+# print(maze.tresure_hunt())
 # print(maze.tresure_hunt2())
 '''
 for i in range(len(maze.nodes)):

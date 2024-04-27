@@ -49,15 +49,15 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
         # t_str = maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[12])))
-        lastuid = 0
-        t_str = "ff"
+        lastuid = ""
+        t_str = "frbl"
         for c in t_str:
             interface.send_action(c)
             while True:
                 if interface.bt.waiting():
                     rt = interface.get_byte()
-                    if rt == "0x6e": break
-                    nowuid = rt[2:]
+                    if rt == b'n': break
+                    nowuid = hex(int.from_bytes(rt, byteorder="big", signed=False))[2:]
                     if lastuid == nowuid: continue
                     # print(nowuid)
                     point.add_UID(nowuid)

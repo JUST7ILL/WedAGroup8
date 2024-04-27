@@ -55,8 +55,7 @@ class Bluetooth:
         waiting = self.serial.in_waiting
         rv = self.serial.read(waiting)
         if rv:
-            uid = hex(int.from_bytes(rv, byteorder="big", signed=False))
             self.serial.reset_input_buffer()
-            return uid
+            return rv
         else:
             return 0
