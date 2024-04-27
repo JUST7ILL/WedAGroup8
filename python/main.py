@@ -51,7 +51,6 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
         lastuid = ""
         # t_str = "ffrbfbl"
         t_str, node_str = maze.tresure_hunt()
-        print(t_str)
         # print(t_str)
         for c in t_str:
             interface.send_action(c)

@@ -240,7 +240,7 @@ class Maze:
     def tresure_hunt(self): # 先找最遠的 再都找最近的
         init_point = 6
         dir = Direction.WEST
-        nodeStart_index = self.first_node(self.node_dict[init_point],self.distance_find(self.node_dict[start_point]))
+        nodeStart_index = self.first_node(self.node_dict[init_point],self.distance_find(self.node_dict[init_point]))
         t_str = ""
         node_str = str(init_point)
         self.visited.append(self.node_dict[init_point])
@@ -276,6 +276,7 @@ class Maze:
    
 # maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
 # print(maze.tresure_hunt())
+# maze.visited.clear()
 # print(maze.tresure_hunt2())
 '''
 for i in range(len(maze.nodes)):
