@@ -49,14 +49,17 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
         lastuid = ""
-        # t_str = "frbl"
-        t_str, node_str = maze.tresure_hunt2()
+        # t_str = "ffrbfbl"
+        t_str, node_str = maze.tresure_hunt()
+        print(t_str)
         # print(t_str)
         for c in t_str:
             interface.send_action(c)
+            # print(c)
             while True:
                 if interface.bt.waiting():
                     rt = interface.get_byte()
+                    # print(rt)
                     if rt == b'n': break
                     nowuid = hex(int.from_bytes(rt, byteorder="big", signed=False))[2:]
                     if lastuid == nowuid: continue
@@ -64,8 +67,8 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
                     point.add_UID(nowuid)
                     lastuid = nowuid
                     break
-        while True:
-            a = 1
+        # while True:
+        #     a = 1
     else:
         log.error("Invalid mode")
         sys.exit(1)

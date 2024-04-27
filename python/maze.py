@@ -238,8 +238,8 @@ class Maze:
                 return i
             
     def tresure_hunt(self): # 先找最遠的 再都找最近的
-        init_point = 1
-        dir = Direction.NORTH
+        init_point = 6
+        dir = Direction.WEST
         nodeStart_index = self.first_node(self.node_dict[init_point],self.distance_find(self.node_dict[start_point]))
         t_str = ""
         node_str = str(init_point)
@@ -260,8 +260,8 @@ class Maze:
         return t_str , node_str
     
     def tresure_hunt2(self): # 都找最近的
-        init_point = 1
-        dir = Direction.NORTH
+        init_point = 6
+        dir = Direction.WEST
         t_str = ""
         node_str = str(init_point)
         now_node = self.node_dict[init_point]        
