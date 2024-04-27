@@ -230,6 +230,10 @@ class Maze:
             if distance[i]>maxvalue:
                 maxvalue = distance[i]
                 maxindex = i
+            elif distance[i]==maxvalue:
+                if len(self.BFS_2(node_start,self.node_dict[i])) < len(self.BFS_2(node_start,self.node_dict[maxindex])):
+                    maxvalue = distance[i]
+                    maxindex = i
         return maxindex
 
     def node_to_index(self, node: Node):
@@ -237,8 +241,8 @@ class Maze:
             if self.node_dict[i] == node:
                 return i
             
-    def tresure_hunt(self): # 先找最遠的 再都找最近的
-        init_point = 6
+    def tresure_hunt(self, init_point): # 先找最遠的 再都找最近的
+        #init_point = 6
         dir = Direction.WEST
         nodeStart_index = self.first_node(self.node_dict[init_point],self.distance_find(self.node_dict[init_point]))
         t_str = ""
@@ -259,8 +263,8 @@ class Maze:
             node_str += "," + str(self.node_to_index(now_node)) 
         return t_str , node_str
     
-    def tresure_hunt2(self): # 都找最近的
-        init_point = 6
+    def tresure_hunt2(self, init_point): # 都找最近的
+        #init_point = 6
         dir = Direction.WEST
         t_str = ""
         node_str = str(init_point)
@@ -274,10 +278,10 @@ class Maze:
             node_str += "," + str(self.node_to_index(now_node)) 
         return t_str , node_str
    
-# maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
-# print(maze.tresure_hunt())
-# maze.visited.clear()
-# print(maze.tresure_hunt2())
+#maze = Maze("C:\\Users\\Ricky\\Downloads\\big_maze_112.csv")
+#print(maze.tresure_hunt(6))
+#maze.visited.clear()
+#print(maze.tresure_hunt2(6))
 '''
 for i in range(len(maze.nodes)):
     print("the distance from node 1 to node ", i+1 ,maze.distance_find(maze.node_dict[47])[i+1])
