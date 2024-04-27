@@ -238,12 +238,13 @@ class Maze:
                 return i
             
     def tresure_hunt(self): # 先找最遠的 再都找最近的
-        nodeStart_index = self.first_node(self.node_dict[6],self.distance_find(self.node_dict[6]))
-        dir = Direction.WEST
+        init_point = 1
+        dir = Direction.NORTH
+        nodeStart_index = self.first_node(self.node_dict[init_point],self.distance_find(self.node_dict[start_point]))
         t_str = ""
-        node_str = "6"
-        self.visited.append(self.node_dict[6])
-        firstAction , dir = self.getActions(self.strategy_2(self.node_dict[6],self.node_dict[nodeStart_index]),dir)
+        node_str = str(init_point)
+        self.visited.append(self.node_dict[init_point])
+        firstAction , dir = self.getActions(self.strategy_2(self.node_dict[init_point],self.node_dict[nodeStart_index]),dir)
         t_str += self.actions_to_str(firstAction)
         # t_str += "  "
         node_str += "," + str(nodeStart_index)
@@ -259,10 +260,11 @@ class Maze:
         return t_str , node_str
     
     def tresure_hunt2(self): # 都找最近的
-        dir = Direction.WEST
+        init_point = 1
+        dir = Direction.NORTH
         t_str = ""
-        node_str = "6"
-        now_node = self.node_dict[6]        
+        node_str = str(init_point)
+        now_node = self.node_dict[init_point]        
         self.visited.append(now_node)
         for i in range(self.endcount() - 1):
             action, now_node = self.strategy(now_node)

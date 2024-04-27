@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 # TODO : Fill in the following information
 TEAM_NAME = "Wed_AFTN_8"
 SERVER_URL = "http://140.112.175.18:5000/"
-MAZE_FILE = "data/small_maze.csv"
+MAZE_FILE = "C:\\Users\\yehyo\\Downloads\\medium_maze.csv"
 BT_PORT = "COM4"
 
 
@@ -48,9 +48,10 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
     elif mode == "1":
         log.info("Mode 1: Self-testing mode.")
         # TODO: You can write your code to test specific function.
-        # t_str = maze.actions_to_str(maze.getActions(maze.strategy_2(maze.node_dict[1],maze.node_dict[12])))
         lastuid = ""
-        t_str = "frbl"
+        # t_str = "frbl"
+        t_str, node_str = maze.tresure_hunt2()
+        # print(t_str)
         for c in t_str:
             interface.send_action(c)
             while True:
