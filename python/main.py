@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 # TODO : Fill in the following information
 TEAM_NAME = "Wed_AFTN_8"
 SERVER_URL = "http://140.112.175.18:5000/"
-MAZE_FILE = "C:\\Users\\yehyo\\Downloads\\medium_maze.csv"
+MAZE_FILE = "C:\\Users\\yehyo\\Downloads\\big_maze_112.csv"
 BT_PORT = "COM4"
 
 
@@ -43,31 +43,46 @@ def main(mode: int, bt_port: str, team_name: str, server_url: str, maze_file: st
     # TODO : Initialize necessary variables
     if mode == "0":
         log.info("Mode 0: For treasure-hunting")
-        # TODO : for treasure-hunting, which encourages you to hunt as many scores as possible
-
-    elif mode == "1":
-        log.info("Mode 1: Self-testing mode.")
-        # TODO: You can write your code to test specific function.
         lastuid = ""
-        # t_str = "ffrbfbl"
-        t_str, node_str = maze.tresure_hunt(6)
-        # print(t_str)
+        # t_str, node_str = maze.tresure_hunt(6)
+        t_str = maze.tresure_hunt6(6)
+        time.sleep(3.7)
+        print(t_str)
         for c in t_str:
             interface.send_action(c)
-            # print(c)
+            print(c)
             while True:
                 if interface.bt.waiting():
                     rt = interface.get_byte()
-                    # print(rt)
                     if rt == b'n': break
                     nowuid = hex(int.from_bytes(rt, byteorder="big", signed=False))[2:]
                     if lastuid == nowuid: continue
-                    # print(nowuid)
                     point.add_UID(nowuid)
                     lastuid = nowuid
                     break
-        # while True:
-        #     a = 1
+    elif mode == "1":
+        log.info("Mode 1: Self-testing mode.")
+        # # TODO: You can write your code to test specific function.
+        # lastuid = ""
+        # # t_str = "ffrbfbl"
+        # t_str, node_str = maze.tresure_hunt(6)
+        # # print(t_str)
+        # for c in t_str:
+        #     interface.send_action(c)
+        #     # print(c)
+        #     while True:
+        #         if interface.bt.waiting():
+        #             rt = interface.get_byte()
+        #             # print(rt)
+        #             if rt == b'n': break
+        #             nowuid = hex(int.from_bytes(rt, byteorder="big", signed=False))[2:]
+        #             if lastuid == nowuid: continue
+        #             # print(nowuid)
+        #             point.add_UID(nowuid)
+        #             lastuid = nowuid
+        #             break
+        # # while True:
+        # #     a = 1
     else:
         log.error("Invalid mode")
         sys.exit(1)

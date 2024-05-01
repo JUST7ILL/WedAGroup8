@@ -70,13 +70,13 @@ void straight(){
 void turn_left(){
   ReadIRs();
   MotorWriting(-turn_speed, turn_speed);
-  delay(15000/turn_speed);
-  while(l2||l1||m0){ // 轉出黑線
-    ReadIRs();
-  }
-  delay(10000/turn_speed); // 確保轉出黑線
+  delay(60000/turn_speed);
+  // while(l2||l1||m0){ // 轉出黑線
+  //   ReadIRs();
+  // }
+  // delay(30000/turn_speed); // 確保轉出黑線
   ReadIRs();
-  while(m0 == 0 && r1 == 0){ // 偵測到左側黑線停止
+  while(l1 == 0 && m0 == 0 && r1 == 0 && r2 == 0){ // 偵測到左側黑線停止
     ReadIRs();
   }
 }
@@ -84,13 +84,14 @@ void turn_left(){
 void turn_right(){
   ReadIRs();
   MotorWriting(turn_speed, -turn_speed);
-  delay(15000/turn_speed);
-  while(r2||r1||m0){ // 轉出黑線
-    ReadIRs();
-  }
-  delay(10000/turn_speed); // 確保轉出黑線
+  // delay(15000/turn_speed);
+  // while(r2||r1||m0){ // 轉出黑線
+  //   ReadIRs();
+  // }
+  // delay(15000/turn_speed); // 確保轉出黑線
+  delay(60000/turn_speed);
   ReadIRs();
-  while(m0 == 0 && l1 == 0){ // 偵測到左側黑線停止
+  while(r1 == 0 && m0 == 0 && l1 == 0 && l2 == 0){ // 偵測到左側黑線停止
     ReadIRs();
   }
 }

@@ -303,7 +303,7 @@ class Maze:
         now_node = self.node_dict[init_point]        
         self.visited.append(now_node)
         six_index = self.far_six(self.node_dict[init_point],self.distance_find(self.node_dict[init_point]))
-        print(six_index)
+        # print(six_index)
         routes = np.empty([6, 6])
         for i in range(6):
             for j in range(6):
@@ -346,7 +346,62 @@ class Maze:
         acts, dir = self.getActions(action, dir)
         t_str += self.actions_to_str(acts)
         return t_str
-   
+
+    def tresure_hunt6(self, init_point): # 找最遠六個中的五個
+        dir = Direction.WEST
+        t_str = ""
+        node_str = str(init_point)
+        now_node = self.node_dict[init_point]        
+        self.visited.append(now_node)
+        six_index = self.far_six(self.node_dict[init_point],self.distance_find(self.node_dict[init_point]))
+        # print(six_index)
+        routes = np.empty([6, 6])
+        for i in range(6):
+            for j in range(6):
+                if i == j: continue
+                routes[i][j] = len(self.strategy_2(self.node_dict[six_index[i]],self.node_dict[six_index[j]]))
+                routes[j][i] = routes[i][j]
+        min_length = 100
+        mi, mj, mk, mu, mv, mw = 0,0,0,0,0,0
+        for i in range(6):
+            for j in range(6):
+                if i == j: continue
+                for k in range(6):
+                    if i == k or j == k: continue
+                    for u in range(6):
+                        if u == i or u == j or u == k: continue
+                        for v in range(6):
+                            if v == i or v == j or v == k or v == u: continue
+                            for w in range(6):
+                                if w == i or w == j or w == k or w == u or w == v: continue
+                                total = len(self.strategy_2(self.node_dict[init_point],self.node_dict[six_index[i]])) + routes[i][j] + routes[j][k] + routes[k][u] + routes[u][v] + routes[v][w]
+                                if total < min_length:
+                                    min_length = total
+                                    mi, mj, mk, mu, mv, mw = i, j, k, u, v, w
+        t_str = ""
+        action= self.strategy_2(self.node_dict[init_point], self.node_dict[six_index[mi]])
+        acts, dir = self.getActions(action, dir)
+        t_str += self.actions_to_str(acts)
+        # t_str += " "
+        action= self.strategy_2(self.node_dict[six_index[mi]], self.node_dict[six_index[mj]])
+        acts, dir = self.getActions(action, dir)
+        t_str += self.actions_to_str(acts)
+        # t_str += " " 
+        action= self.strategy_2(self.node_dict[six_index[mj]], self.node_dict[six_index[mk]])
+        acts, dir = self.getActions(action, dir)
+        t_str += self.actions_to_str(acts)
+        # t_str += " " 
+        action= self.strategy_2(self.node_dict[six_index[mk]], self.node_dict[six_index[mu]])
+        acts, dir = self.getActions(action, dir)
+        t_str += self.actions_to_str(acts)
+        # t_str += " " 
+        action= self.strategy_2(self.node_dict[six_index[mu]], self.node_dict[six_index[mv]])
+        acts, dir = self.getActions(action, dir)
+        t_str += self.actions_to_str(acts)
+        action= self.strategy_2(self.node_dict[six_index[mv]], self.node_dict[six_index[mw]])
+        acts, dir = self.getActions(action, dir)
+        t_str += self.actions_to_str(acts)
+        return t_str
 #maze = Maze("C:\\Users\\Ricky\\Downloads\\big_maze_112.csv")
 #print(maze.tresure_hunt(6))
 #maze.visited.clear()
@@ -371,5 +426,5 @@ for i in range(maze.endcount() - 1):
     
 print(t_str)
 '''
-maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
-print(maze.tresure_hunt3(6))
+# maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
+# print(maze.tresure_hunt3(6))
