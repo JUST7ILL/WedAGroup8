@@ -362,7 +362,7 @@ class Maze:
                 routes[i][j] = len(self.strategy_2(self.node_dict[six_index[i]],self.node_dict[six_index[j]]))
                 routes[j][i] = routes[i][j]
         min_length = 100
-        mi, mj, mk, mu, mv, mw = 0,0,0,0,0,0
+        bests = np.empty(7)
         for i in range(6):
             for j in range(6):
                 if i == j: continue
@@ -377,30 +377,32 @@ class Maze:
                                 total = len(self.strategy_2(self.node_dict[init_point],self.node_dict[six_index[i]])) + routes[i][j] + routes[j][k] + routes[k][u] + routes[u][v] + routes[v][w]
                                 if total < min_length:
                                     min_length = total
-                                    mi, mj, mk, mu, mv, mw = i, j, k, u, v, w
+                                    bests[1],bests[2],bests[3],bests[4],bests[5],bests[6] = six_index[i],six_index[j],six_index[k],six_index[u],six_index[v],six_index[w]
+        bests[0] = init_point
         t_str = ""
-        action= self.strategy_2(self.node_dict[init_point], self.node_dict[six_index[mi]])
-        acts, dir = self.getActions(action, dir)
-        t_str += self.actions_to_str(acts)
-        # t_str += " "
-        action= self.strategy_2(self.node_dict[six_index[mi]], self.node_dict[six_index[mj]])
-        acts, dir = self.getActions(action, dir)
-        t_str += self.actions_to_str(acts)
-        # t_str += " " 
-        action= self.strategy_2(self.node_dict[six_index[mj]], self.node_dict[six_index[mk]])
-        acts, dir = self.getActions(action, dir)
-        t_str += self.actions_to_str(acts)
-        # t_str += " " 
-        action= self.strategy_2(self.node_dict[six_index[mk]], self.node_dict[six_index[mu]])
-        acts, dir = self.getActions(action, dir)
-        t_str += self.actions_to_str(acts)
-        # t_str += " " 
-        action= self.strategy_2(self.node_dict[six_index[mu]], self.node_dict[six_index[mv]])
-        acts, dir = self.getActions(action, dir)
-        t_str += self.actions_to_str(acts)
-        action= self.strategy_2(self.node_dict[six_index[mv]], self.node_dict[six_index[mw]])
-        acts, dir = self.getActions(action, dir)
-        t_str += self.actions_to_str(acts)
+        for i in range(6):
+            action= self.strategy_2(self.node_dict[int(bests[i])], self.node_dict[int(bests[i+1])])
+            acts, dir = self.getActions(action, dir)
+            t_str += self.actions_to_str(acts)
+            t_str += " "
+        # action= self.strategy_2(self.node_dict[six_index[mi]], self.node_dict[six_index[mj]])
+        # acts, dir = self.getActions(action, dir)
+        # t_str += self.actions_to_str(acts)
+        # # t_str += " " 
+        # action= self.strategy_2(self.node_dict[six_index[mj]], self.node_dict[six_index[mk]])
+        # acts, dir = self.getActions(action, dir)
+        # t_str += self.actions_to_str(acts)
+        # # t_str += " " 
+        # action= self.strategy_2(self.node_dict[six_index[mk]], self.node_dict[six_index[mu]])
+        # acts, dir = self.getActions(action, dir)
+        # t_str += self.actions_to_str(acts)
+        # # t_str += " " 
+        # action= self.strategy_2(self.node_dict[six_index[mu]], self.node_dict[six_index[mv]])
+        # acts, dir = self.getActions(action, dir)
+        # t_str += self.actions_to_str(acts)
+        # action= self.strategy_2(self.node_dict[six_index[mv]], self.node_dict[six_index[mw]])
+        # acts, dir = self.getActions(action, dir)
+        # t_str += self.actions_to_str(acts)
         return t_str
 #maze = Maze("C:\\Users\\Ricky\\Downloads\\big_maze_112.csv")
 #print(maze.tresure_hunt(6))
@@ -426,5 +428,5 @@ for i in range(maze.endcount() - 1):
     
 print(t_str)
 '''
-# maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
-# print(maze.tresure_hunt3(6))
+maze = Maze("C:\\Users\\yehyo\\Downloads\\big_maze_112.csv")
+print(maze.tresure_hunt6(6))
