@@ -33,7 +33,7 @@ for x in jsondata:
     c_la=x["latitude"]
     c_lo=x["longitude"]
     c_dis=distance(fakela, c_la , fakelo, c_lo)
-    if (c_dis<f_dis):
+    if (c_dis<f_dis and c_ava>0):
         f_sna=c_sna
         f_ava=c_ava
         f_dis=c_dis
