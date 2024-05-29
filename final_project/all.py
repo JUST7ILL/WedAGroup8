@@ -340,9 +340,6 @@ def angle(lat1, lat2, lon1, lon2):
     compass_bearing = (initial_bearing + 360) % 360
     return compass_bearing
 
-def distance(la1,la2,lo1,lo2):
-    dis = math.sqrt((la1-la2)*(la1-la2)+(lo1-lo2)*(lo1-lo2))
-    return dis
 def distance(lat1, lat2, lon1, lon2):
     lat1 = math.radians(lat1)
     lon1 = math.radians(lon1)
@@ -406,6 +403,7 @@ outputD(12)
 outputD(1)
 time.sleep(0.05)
 outputD(6)
+resetGDRAM()
 # end of init LCD
 
 while True:
@@ -465,7 +463,7 @@ while True:
     # print(row)
     draw_arrow((arrow_angle + 22.5/2) // 16)
     WriteWords(f_sna[11:], 1)
-    WriteWords(f_dis + 'm', 4)
+    WriteWords(str(f_dis) + 'm', 4)
     time.sleep(1)
     
     
