@@ -404,69 +404,69 @@ outputD(1)
 time.sleep(0.05)
 outputD(6)
 # end of init LCD
-
-while True:
-  port="/dev/ttyS0"
-  ser=serial.Serial(port, baudrate=9600, timeout=0.5)
-  dataout = pynmea2.NMEAStreamReader()
-  newdata=ser.readline()
-  #print(newdata)
-  if newdata[0:6] == b"$GPRMC":
-    ndata=newdata.decode('ascii')
-    newmsg=pynmea2.parse(ndata)
-    now_lat=newmsg.latitude
-    now_lng=newmsg.longitude
-    if float(now_lat) > 26 or float(now_lat) < 21 or float(now_lng) > 123 or float(now_lng) < 119:
-        print(now_lat)
-        print(now_lng)
-        continue
-    #geolocator = Nominatim(user_agent="gps")
-    #location = geolocator.reverse(str(now_lat)+","+str(now_lng))
-    #print(location.address)
-    
-    #讀羅盤
-    x = read_raw_data(X_axis_H)
-    z = read_raw_data(Z_axis_H)
-    y = read_raw_data(Y_axis_H)
-    heading = math.atan2(y, x) + declination
-    
-    #Due to declination check for >360 degree
-    if(heading > 2*pi):
-            heading = heading - 2*pi
-    
-    #check for sign
-    if(heading < 0):
-            heading = heading + 2*pi
-    
-    #convert into angle
-    heading_angle = int(heading * 180/pi)
-    
-    #預設輸出
-    f_sna=jsondata[0]["sna"]
-    f_ava=jsondata[0]["available_return_bikes"]
-    f_dis=distance(now_lat,jsondata[0]["latitude"],now_lng,jsondata[0]["longitude"])
-    f_ang_gps=angle(now_lat,jsondata[0]["latitude"],now_lng,jsondata[0]["longitude"])
-    
-    #尋找最近站點
-    for x in jsondata:
-        c_sna=x["sna"]#站點名稱
-        c_ava=x["available_return_bikes"]#剩餘車位
-        c_la=x["latitude"]
-        c_lo=x["longitude"]
-        c_dis=distance(now_lat, c_la , now_lng, c_lo)
-        c_ang_gps=angle(now_lat, c_la,now_lng,c_lo)
-        if (c_dis<f_dis and c_ava>0):
-            f_sna=c_sna
-            f_ava=c_ava
-            f_dis=c_dis
-            f_ang_gps=c_ang_gps
-    #輸出
-    arrow_angle = (heading_angle-f_ang_gps) % 360
-    # row='最近站點:'+f_sna+' 剩餘車位:'+str(f_ava)+' 距離:'+str(f_dis)+' GPS方位(N為0度)'+str(f_ang_gps)+' heading angle:'+str(heading_angle)+' 夾角:'+str((heading_angle-f_ang_gps) % 360)
-    # print(row)
-    draw_arrow((arrow_angle + 22.5/2) // 16)
-    WriteWords(f_sna[11:], 1)
-    WriteWords(str(int(f_dis)) + 'm', 4)
-    time.sleep(1)
-    
-    
+try:
+    while True:
+        port="/dev/ttyS0"
+        ser=serial.Serial(port, baudrate=9600, timeout=0.5)
+        dataout = pynmea2.NMEAStreamReader()
+        newdata=ser.readline()
+        #print(newdata)
+        if newdata[0:6] == b"$GPRMC":
+            ndata=newdata.decode('ascii')
+            newmsg=pynmea2.parse(ndata)
+            now_lat=newmsg.latitude
+            now_lng=newmsg.longitude
+            if float(now_lat) > 26 or float(now_lat) < 21 or float(now_lng) > 123 or float(now_lng) < 119:
+                print(now_lat)
+                print(now_lng)
+                continue
+            #geolocator = Nominatim(user_agent="gps")
+            #location = geolocator.reverse(str(now_lat)+","+str(now_lng))
+            #print(location.address)
+            
+            #讀羅盤
+            x = read_raw_data(X_axis_H)
+            z = read_raw_data(Z_axis_H)
+            y = read_raw_data(Y_axis_H)
+            heading = math.atan2(y, x) + declination
+            
+            #Due to declination check for >360 degree
+            if(heading > 2*pi):
+                    heading = heading - 2*pi
+            
+            #check for sign
+            if(heading < 0):
+                    heading = heading + 2*pi
+            
+            #convert into angle
+            heading_angle = int(heading * 180/pi)
+            
+            #預設輸出
+            f_sna=jsondata[0]["sna"]
+            f_ava=jsondata[0]["available_return_bikes"]
+            f_dis=distance(now_lat,jsondata[0]["latitude"],now_lng,jsondata[0]["longitude"])
+            f_ang_gps=angle(now_lat,jsondata[0]["latitude"],now_lng,jsondata[0]["longitude"])
+            
+            #尋找最近站點
+            for x in jsondata:
+                c_sna=x["sna"]#站點名稱
+                c_ava=x["available_return_bikes"]#剩餘車位
+                c_la=x["latitude"]
+                c_lo=x["longitude"]
+                c_dis=distance(now_lat, c_la , now_lng, c_lo)
+                c_ang_gps=angle(now_lat, c_la,now_lng,c_lo)
+                if (c_dis<f_dis and c_ava>0):
+                    f_sna=c_sna
+                    f_ava=c_ava
+                    f_dis=c_dis
+                    f_ang_gps=c_ang_gps
+            #輸出
+            arrow_angle = (heading_angle-f_ang_gps) % 360
+            # row='最近站點:'+f_sna+' 剩餘車位:'+str(f_ava)+' 距離:'+str(f_dis)+' GPS方位(N為0度)'+str(f_ang_gps)+' heading angle:'+str(heading_angle)+' 夾角:'+str((heading_angle-f_ang_gps) % 360)
+            # print(row)
+            draw_arrow((arrow_angle + 22.5/2) // 16)
+            WriteWords(f_sna[11:], 1)
+            WriteWords(str(int(f_dis)) + 'm', 4)
+            time.sleep(1) 
+except KeyboardInterrupt:
+    GPIO.cleanup()
