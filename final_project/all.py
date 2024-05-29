@@ -327,12 +327,34 @@ data= requests.get(url).content.decode("utf-8")
 
 jsondata = json.loads(data)
 #some function
+def angle(lat1, lat2, lon1, lon2):
+    lat1 = math.radians(lat1)
+    lon1 = math.radians(lon1)
+    lat2 = math.radians(lat2)
+    lon2 = math.radians(lon2)
+    d_lon = lon2 - lon1
+    x = math.sin(d_lon) * math.cos(lat2)
+    y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1) * math.cos(lat2) * math.cos(d_lon))
+    initial_bearing = math.atan2(x, y)
+    initial_bearing = math.degrees(initial_bearing)
+    compass_bearing = (initial_bearing + 360) % 360
+    return compass_bearing
+
 def distance(la1,la2,lo1,lo2):
     dis = math.sqrt((la1-la2)*(la1-la2)+(lo1-lo2)*(lo1-lo2))
     return dis
-def angle(la1,la2,lo1,lo2):#正東方為零度
-    ang = int(math.atan((la2-la1)/(lo2-lo1))*180/pi)
-    return ang
+def distance(lat1, lat2, lon1, lon2):
+    lat1 = math.radians(lat1)
+    lon1 = math.radians(lon1)
+    lat2 = math.radians(lat2)
+    lon2 = math.radians(lon2)
+    R = 6371000.0
+    d_lat = lat2 - lat1
+    d_lon = lon2 - lon1
+    a = math.sin(d_lat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(d_lon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    dis = R * c
+    return dis
 
 def Magnetometer_Init():
         #write to Configuration Register A
@@ -438,13 +460,12 @@ while True:
             f_dis=c_dis
             f_ang_gps=c_ang_gps
     #輸出
-    n_f_ang_gps = (450 - f_ang_gps) % 360 # north clockwise
-    arrow_angle = (heading_angle-n_f_ang_gps) % 360
-    # row='最近站點:'+f_sna+' 剩餘車位:'+str(f_ava)+' 距離:'+str(f_dis)+' GPS方位(N為0度)'+str(n_f_ang_gps)+' heading angle:'+str(heading_angle)+' 夾角:'+str((heading_angle-n_f_ang_gps) % 360)
+    arrow_angle = (heading_angle-f_ang_gps) % 360
+    # row='最近站點:'+f_sna+' 剩餘車位:'+str(f_ava)+' 距離:'+str(f_dis)+' GPS方位(N為0度)'+str(f_ang_gps)+' heading angle:'+str(heading_angle)+' 夾角:'+str((heading_angle-f_ang_gps) % 360)
     # print(row)
     draw_arrow((arrow_angle + 22.5/2) // 16)
-    WriteWords(f_sna, 1)
-    WriteWords(u"餘位: " + f_ava, 4)
+    WriteWords(f_sna[11:], 1)
+    WriteWords(f_dis + 'm', 4)
     time.sleep(1)
     
     
