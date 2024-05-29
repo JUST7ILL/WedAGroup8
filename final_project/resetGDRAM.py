@@ -12,7 +12,6 @@ PIN_D7 = 6
 PIN_RS = 8
 PIN_RW = 10
 PIN_E = 11
-GPIO.setmode(GPIO.BCM)
 
 def outputD(num):
 	GPIO.output(PIN_D7, (num//128))
@@ -64,4 +63,28 @@ def resetGDRAM():
 			time.sleep(0.001)
 			GPIO.output(PIN_E, False)
 			time.sleep(0.001)
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(PIN_D0, GPIO.OUT)
+GPIO.setup(PIN_D1, GPIO.OUT)
+GPIO.setup(PIN_D2, GPIO.OUT)
+GPIO.setup(PIN_D3, GPIO.OUT)
+GPIO.setup(PIN_D4, GPIO.OUT)
+GPIO.setup(PIN_D5, GPIO.OUT)
+GPIO.setup(PIN_D6, GPIO.OUT)
+GPIO.setup(PIN_D7, GPIO.OUT)
+GPIO.setup(PIN_RS, GPIO.OUT)
+GPIO.setup(PIN_RW, GPIO.OUT)
+GPIO.setup(PIN_E, GPIO.OUT)
+
+GPIO.output(PIN_E, False)
+GPIO.output(PIN_RW, False)
+GPIO.output(PIN_RS, False) # command
+time.sleep(0.05)
+outputD(48)
+outputD(48)
+outputD(12)
+outputD(1)
+time.sleep(0.05)
+outputD(6)
 resetGDRAM()
