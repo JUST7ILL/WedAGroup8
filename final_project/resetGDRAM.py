@@ -12,6 +12,8 @@ PIN_D7 = 6
 PIN_RS = 8
 PIN_RW = 10
 PIN_E = 11
+GPIO.setmode(GPIO.BCM)
+
 def outputD(num):
 	GPIO.output(PIN_D7, (num//128))
 	GPIO.output(PIN_D6, (num%128//64))
