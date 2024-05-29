@@ -62,3 +62,4 @@ def resetGDRAM():
 			time.sleep(0.001)
 			GPIO.output(PIN_E, False)
 			time.sleep(0.001)
+resetGDRAM()
