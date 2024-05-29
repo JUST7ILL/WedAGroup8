@@ -416,7 +416,7 @@ while True:
     newmsg=pynmea2.parse(ndata)
     now_lat=newmsg.latitude
     now_lng=newmsg.longitude
-    if now_lat > 26 or now_lat < 21 or now_lng > 123 or now_lng < 119:
+    if float(now_lat) > 26 or float(now_lat) < 21 or float(now_lng) > 123 or float(now_lng) < 119:
         continue
     #geolocator = Nominatim(user_agent="gps")
     #location = geolocator.reverse(str(now_lat)+","+str(now_lng))
