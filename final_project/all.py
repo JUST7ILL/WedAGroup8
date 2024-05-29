@@ -403,7 +403,6 @@ outputD(12)
 outputD(1)
 time.sleep(0.05)
 outputD(6)
-resetGDRAM()
 # end of init LCD
 
 while True:
