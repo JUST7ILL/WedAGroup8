@@ -417,6 +417,8 @@ while True:
     newmsg=pynmea2.parse(ndata)
     now_lat=newmsg.latitude
     now_lng=newmsg.longitude
+    if now_lat > 26 or now_lat < 21 or now_lng > 123 or now_lng < 119:
+        continue
     #geolocator = Nominatim(user_agent="gps")
     #location = geolocator.reverse(str(now_lat)+","+str(now_lng))
     #print(location.address)
@@ -463,7 +465,7 @@ while True:
     # print(row)
     draw_arrow((arrow_angle + 22.5/2) // 16)
     WriteWords(f_sna[11:], 1)
-    WriteWords(str(f_dis) + 'm', 4)
+    WriteWords(str(int(f_dis)) + 'm', 4)
     time.sleep(1)
     
     
