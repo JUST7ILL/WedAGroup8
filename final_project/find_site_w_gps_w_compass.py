@@ -34,7 +34,6 @@ url='https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.
 data= requests.get(url).content.decode("utf-8")
 
 jsondata = json.loads(data)
-
 #some function
 def distance(la1,la2,lo1,lo2):
     dis = math.sqrt((la1-la2)*(la1-la2)+(lo1-lo2)*(lo1-lo2))
@@ -73,15 +72,15 @@ while True:
   port="/dev/ttyS0"
   ser=serial.Serial(port, baudrate=9600, timeout=0.5)
   dataout = pynmea2.NMEAStreamReader()
-  ndata=ser.readline()
-  newdata=ndata.decode('ascii')
+  newdata=ser.readline()
   #print(newdata)
-  if newdata[0:6] == "$GPRMC":
-    newmsg=pynmea2.parse(newdata)
+  if newdata[0:6] == b"$GPRMC":
+    ndata=newdata.decode('ascii')
+    newmsg=pynmea2.parse(ndata)
     now_lat=newmsg.latitude
     now_lng=newmsg.longitude
     #geolocator = Nominatim(user_agent="gps")
-    #location = geolocator.reverse(str(lat)+","+str(lng))
+    #location = geolocator.reverse(str(now_lat)+","+str(now_lng))
     #print(location.address)
     
     #讀羅盤
@@ -121,7 +120,6 @@ while True:
             f_dis=c_dis
             f_ang_gps=c_ang_gps
     #輸出
-    row='最近站點:'+f_sna+' 剩餘車位:'
-    +str(f_ava)+' 距離:'+str(f_dis)+' GPS方位(東方為0度)'+str(f_ang_gps)
-    +'heading angle'+str(heading_angle)+'夾角'+str(heading_angle-f_ang_gps)
+    n_f_ang_gps = (450 - f_ang_gps) % 360 # north clockwise
+    row='最近站點:'+f_sna+' 剩餘車位:'+str(f_ava)+' 距離:'+str(f_dis)+' GPS方位(N為0度)'+str(n_f_ang_gps)+' heading angle:'+str(heading_angle)+' 夾角:'+str((heading_angle-n_f_ang_gps) % 360)
     print(row)
