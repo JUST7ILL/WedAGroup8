@@ -419,6 +419,8 @@ try:
             if float(now_lat) > 26 or float(now_lat) < 21 or float(now_lng) > 123 or float(now_lng) < 119:
                 print(now_lat)
                 print(now_lng)
+                ClearAll()
+                WriteWords("無法取得GPS訊號", 1)
                 continue
             #geolocator = Nominatim(user_agent="gps")
             #location = geolocator.reverse(str(now_lat)+","+str(now_lng))
