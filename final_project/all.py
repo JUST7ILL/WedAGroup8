@@ -412,7 +412,10 @@ try:
         newdata=ser.readline()
         #print(newdata)
         if newdata[0:6] == b"$GPRMC":
-            ndata=newdata.decode('ascii')
+            try:
+                ndata=newdata.decode('ascii')
+            except:
+                continue
             newmsg=pynmea2.parse(ndata)
             now_lat=newmsg.latitude
             now_lng=newmsg.longitude
