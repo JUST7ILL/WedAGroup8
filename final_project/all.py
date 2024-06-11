@@ -298,6 +298,7 @@ def ClearAll():
 	
 
 def WriteWords(data, line):
+	SetLine(line)
 	half_count = 0
 	line_length = 0 # for automatic line transfer
 	GPIO.output(PIN_RS, True)
@@ -466,10 +467,10 @@ try:
                     f_dis=c_dis
                     f_ang_gps=c_ang_gps
             #輸出
-            arrow_angle = (heading_angle-f_ang_gps) % 360
+            arrow_angle = (f_ang_gps-heading_angle) % 360
             # row='最近站點:'+f_sna+' 剩餘車位:'+str(f_ava)+' 距離:'+str(f_dis)+' GPS方位(N為0度)'+str(f_ang_gps)+' heading angle:'+str(heading_angle)+' 夾角:'+str((heading_angle-f_ang_gps) % 360)
             # print(row)
-            draw_arrow((arrow_angle + 22.5/2) // 16)
+            draw_arrow((arrow_angle + 22.5/2) // 22.5)
             WriteWords(f_sna[11:], 1)
             WriteWords(str(int(f_dis)) + 'm', 4)
             time.sleep(1) 
